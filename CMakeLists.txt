@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.24)
 project(Vicon LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 
-set(BOOST_ROOT $ENV{HOME}/workspace/boost_1_80_0)
-set(Boost_INCLUDE_DIR ${BOOST_ROOT})
-set(Boost_LIBRARY_DIR ${BOOST_ROOT}/stage/lib)
+#set(BOOST_ROOT $ENV{HOME}/workspace/boost_1_80_0)
+#set(Boost_INCLUDE_DIR ${BOOST_ROOT})
+#set(Boost_LIBRARY_DIR ${BOOST_ROOT}/stage/lib)
 
 set(lib "${CMAKE_CURRENT_SOURCE_DIR}/lib")
 #message(${lib_space})

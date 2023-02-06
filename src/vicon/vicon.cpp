@@ -4,8 +4,8 @@
 
 #include "vicon.hpp"
 
-vicon::vicon(std::string hostname, const int buffer_size) {
-  this->hostname = hostname;
+vicon::vicon(std::string host_address, const int buffer_size) {
+  this->host_address = host_address;
   this->buffer_size = buffer_size;
 }
 //
@@ -17,15 +17,19 @@ vicon::~vicon() {
 bool vicon::connect() {
 
   while (!client_.IsConnected().Connected) {
-    bool success = client_.Connect(hostname);
+    bool success = client_.Connect(host_address);
     if(success)
       break;
     RSINFO("Connecting")
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
   }
 
+
+  client_.EnableSegmentData();
   client_.EnableMarkerData();
   RSFATAL_IF(client_.EnableMarkerData().Result != Result::Success, "Enable Marker Data Failed")
+  RSFATAL_IF(client_.EnableSegmentData().Result != Result::Success, "Enable Segment Data Failed")
+  client_.SetStreamMode(StreamMode::ClientPull);
   client_.SetBufferSize(buffer_size);
   return true;
 }
@@ -41,6 +45,11 @@ bool vicon::disconnect() {
 }
 
 void vicon::get_frame() {
+  std::clock_t start, finish;
+  double duration;
+
+  start = clock();
+
   client_.GetFrame();
   Output_GetFrameNumber frame_number = client_.GetFrameNumber();
   RSINFO("Frame number : " << frame_number.FrameNumber)
@@ -74,6 +83,13 @@ void vicon::get_frame() {
 
     }
   }
+
+  finish = clock();
+
+  duration = (double)(finish - start) / CLOCKS_PER_SEC;
+
+  RSINFO("time using : " << duration)
+  RSINFO("----------------------------")
 }
 
 

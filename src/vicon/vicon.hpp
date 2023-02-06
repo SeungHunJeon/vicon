@@ -11,6 +11,7 @@
 #include "raisim_message.hpp"
 #include "thread"
 #include "eigen3/Eigen/Core"
+#include "time.h"
 
 //#include <rclcpp/rclcpp.hpp>
 
@@ -30,7 +31,7 @@ struct PoseStruct
 
 class vicon {
  public:
-  vicon(std::string hostname, const int buffer_size);
+  vicon(std::string host_address, const int buffer_size);
 
   ~vicon();
 
@@ -42,7 +43,7 @@ class vicon {
 
  private:
   ViconDataStreamSDK::CPP::Client client_;
-  string hostname;
+  string host_address;
   unsigned int buffer_size;
 };
 
